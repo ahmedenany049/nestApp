@@ -1,0 +1,5 @@
+
+export enum OtpEnum {
+    CONFIRM_EMAIL = "CONFIRM_EMAIL",
+    FORGET_PASSWORD= "FORGET_PASSWORD"
+}
