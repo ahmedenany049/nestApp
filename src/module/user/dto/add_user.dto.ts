@@ -64,3 +64,9 @@ export class logInDto {
     @IsNotEmpty()
     email:string;
 }
+
+export class reSendOtpDto {
+    @IsEmail()
+    @IsNotEmpty()
+    email:string;
+}

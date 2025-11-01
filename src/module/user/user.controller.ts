@@ -1,8 +1,14 @@
-import { Body, Controller, Patch, Post, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Patch, Post, Request, SetMetadata, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { AddUserDto, addUserQueryDto, confirmEmailDto, logInDto } from "./dto/add_user.dto";
+import { AddUserDto,  confirmEmailDto, logInDto, reSendOtpDto } from "./dto/add_user.dto";
+import {  UserRole } from "src/common/enums";
+import { Role, Token, User } from "src/common/decorators";
+import { AuthorizationGuard } from "src/common/guards/authorization.guard";
+import { AuthenticationGuard } from "src/common/guards";
+import type { UserWithRrequest } from "src/common/interFaces";
 
 @Controller('users')
+
 export class UserController {
     constructor(private readonly userService:UserService){}
     @Post("signUp")
@@ -12,6 +18,15 @@ export class UserController {
     ){
         return this.userService.addUsers(body)
     }
+    //========================================================================================
+    @Post("reSendOtp")
+    @UsePipes(new ValidationPipe({whitelist:true,forbidNonWhitelisted:true,stopAtFirstError:true,}))
+    reSendOtp(
+        @Body()body:reSendOtpDto,
+    ){
+        return this.userService.reSendOtp(body)
+    }
+    //==========================================================================================
     @Patch("confirm")
     @UsePipes(new ValidationPipe({whitelist:true,forbidNonWhitelisted:true,stopAtFirstError:true,}))
     confirmEmail(
@@ -27,5 +42,15 @@ export class UserController {
         @Body()body:logInDto,
     ){
         return this.userService.logIn(body)
+    }
+
+    @Token()
+    @Role([UserRole.USER])
+    @UseGuards(AuthenticationGuard,AuthorizationGuard)
+    @Get("profile")
+    profile(
+        @User() user:UserWithRrequest,
+    ){
+        return {message:"profile",user}
     }
 }
