@@ -15,7 +15,10 @@ export class DBrepo<Tdocument>{
     async updateOne(filter:RootFilterQuery<Tdocument>,update:UpdateQuery<Tdocument>):Promise<UpdateWriteOpResult>{
         return await this.model.updateOne(filter,update)
     }
-    async findOneAndUpdate(filter:RootFilterQuery<Tdocument>,update:UpdateQuery<Tdocument>,options:QueryOptions<Tdocument>|null ={new:true}):Promise<HydratedDocument<Tdocument>|null>{
+    async findOneAndUpdate(
+        filter:RootFilterQuery<Tdocument>,
+        update:UpdateQuery<Tdocument>,
+        options:QueryOptions<Tdocument>|null ={new:true}):Promise<HydratedDocument<Tdocument>|null>{
         return await this.model.findOneAndUpdate(filter,update,options)
     }
     async deleteOne(filter:RootFilterQuery<Tdocument>):Promise<DeleteResult>{
@@ -35,9 +38,9 @@ export class DBrepo<Tdocument>{
             skip,
             limit
         }
-        const count = await this.model.countDocuments({deletedAt:{$exists:false}})
-        const numberOfPages = Math.ceil(count /limit)
-        const docs =await this.model.find(filter,select,finalOptions)
-        return {docs,curentPage:page,countDocuments:count,numberOfPages}
+        const countDoc = await this.model.countDocuments({deletedAt:{$exists:false}})
+        const totalPages = Math.ceil(countDoc /limit)
+        const result =await this.model.find(filter,select,finalOptions)
+        return {result,currentPage:page,countDoc,totalPages}
     }
 }
