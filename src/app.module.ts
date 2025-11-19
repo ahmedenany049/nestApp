@@ -7,6 +7,9 @@ import { ConfigModule } from '@nestjs/config';
 import { Connection } from 'mongoose';
 import { BrandModule } from './module/brand/brand.module';
 import { CategoryModule } from './module/category/category.module';
+import { ProductModule } from './module/product/product.module';
+import { CartModule } from './module/cart/cart.module';
+import { CouponModule } from './module/coupon/coupon.module';
 
 @Module({
   imports: [
@@ -21,7 +24,10 @@ import { CategoryModule } from './module/category/category.module';
       }),
       UserModule,
       BrandModule,
-      CategoryModule
+      CategoryModule,
+      ProductModule,
+      CartModule,
+      CouponModule
   ],
   controllers: [AppController],
   providers: [AppService],

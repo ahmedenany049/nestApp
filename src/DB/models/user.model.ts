@@ -1,5 +1,5 @@
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 import { UserGender, UserProvider, UserRole } from "src/common/enums";
 import type{ OtpDocument } from "./otp.model";
 import { Hash } from "src/common/helpers/hash/hash";
@@ -21,22 +21,32 @@ export class User{
         }
     })
     userName:string
-    @Prop()
+
+    @Prop({type:Boolean})
     confirmed:Boolean
+
     @Prop({type:String,required:true,lowercase:true,trim:true})
     email:string;
+
     @Prop({type:String,required:true,min:6,trim:true})
     password:string;
+
     @Prop({type:String,required:true,min:18,trim:true})
     age:number;
     @Prop({type:String,enum:UserRole,default:UserRole.USER})
     role:UserRole;
+
     @Prop({type:String,enum:UserGender,default:UserGender.MALE})
     gender:UserGender;
+
     @Prop({type:String,enum:UserProvider,default:UserProvider.LOCAL})
     provider:UserProvider;
+
     @Prop({type:Date,default:Date.now})
     changeCredentialAt:Date
+
+    @Prop({type:[{type:Types.ObjectId,ref:"Product"}]})
+    wishList:Types.ObjectId
 
     @Virtual()
     otp:OtpDocument

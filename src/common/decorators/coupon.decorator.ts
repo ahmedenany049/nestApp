@@ -1,0 +1,21 @@
+import {ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
+
+
+@ValidatorConstraint({ name: 'CouponValidation', async: false })
+export class CouponValidation implements ValidatorConstraintInterface {
+    validate(value: any, args: ValidationArguments) {
+        const obj = args.object as any
+        const fromDate = new Date(obj.fromDate)
+        const toDate = new Date(obj.toDate)
+        const now = new Date()
+        return fromDate >= now && fromDate < toDate 
+    }
+    defaultMessage(args: ValidationArguments) {
+        return "fromDate should be greater than or equal to now and less than toDate";
+    }
+}
+
+
+
+
+

@@ -22,7 +22,7 @@ export class category {
     @Prop({type:Types.ObjectId,ref:"User",required:true})
     createdBy:Types.ObjectId
 
-    @Prop({type:Types.ObjectId,ref:"Brand"})
+    @Prop({type:[{type:Types.ObjectId,ref:"Brand"}]})
     brands:Types.ObjectId[]
 
     @Prop({type:Types.ObjectId,ref:"User"})
